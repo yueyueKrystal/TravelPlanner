@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from .ai_agent import runAIModel
+
+
 
 app = FastAPI()
 
@@ -6,6 +9,9 @@ app = FastAPI()
 async def read_root():
     return {"message": "Hello, FastAPI!"}
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/items/")
+async def read_item(
+    destination: str = Query(..., description="旅行目的地"),
+    days: int = Query(..., description="旅行天数")
+):
+    return runAIModel(str, int)
